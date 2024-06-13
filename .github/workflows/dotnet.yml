@@ -2,35 +2,34 @@ name: .NET
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.301
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.301
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+      - name: Build
+        run: dotnet publish -r win-x64
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: WinHideDot
-        path: |
-          bin/Debug/net8.0/WinHideDot.exe
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: WinHideDot
+          path: |
+            bin\Release\net8.0\win-x64\publish\WinHideDot.exe
